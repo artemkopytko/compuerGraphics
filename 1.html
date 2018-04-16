@@ -1,0 +1,390 @@
+<style type="text/css">
+	canvas {
+		border: 1px solid black;
+	}
+</style>
+
+<canvas id="canvas" width="700px" height="500px"></canvas>
+<script type="text/javascript">
+	var height = 500;
+	var width = 700;
+
+	var canvas = document.getElementById('canvas');
+	var ctx = canvas.getContext('2d');
+
+	for (var x = 0.5; x < width; x += 10) {
+		ctx.moveTo(x, 0);
+		ctx.lineTo(x, height);
+	}
+
+	for (var y = 0.5; y < height; y += 10) {
+		ctx.moveTo(0, y);
+		ctx.lineTo(width, y);
+	}
+
+	ctx.strokeStyle = "#eee";
+	ctx.stroke();
+
+// y axis
+	ctx.beginPath();
+	ctx.strokeStyle = "#000";
+	ctx.moveTo(width/2, 0);
+	ctx.lineTo(width/2, height);
+	ctx.stroke();
+// x axis
+
+	ctx.beginPath();
+	ctx.strokeStyle = "#000";
+	ctx.moveTo(0, height/2);
+	ctx.lineTo(width, height/2);
+	ctx.stroke();
+ 
+ // coordinates x
+ var digit;
+
+	for (var i = 0 ; i < width; i+= 10) {
+		ctx.moveTo(i,height/2);
+		ctx.beginPath()
+		ctx.arc(i,height/2,2,0,2*Math.PI);
+		ctx.fill();
+		// ctx.font = '5px';
+		
+		// if(i<100){
+		// 	digit = (''+i)[0];
+		// } else {
+		// 	digit = (''+i)[0]+('' + i)[1];
+		// }
+		
+		// if(digit%2==0) {
+		// // ctx.fillText(i,i-5,height/2 - 15);
+		// } else {
+		// 	if(digit%5==0)
+		// 	ctx.fillText(i,i-5,height/2 + 15);
+		// }
+	}
+
+	//coordinates y
+
+	for (var i = 0 ; i < height; i+= 10) {
+		ctx.moveTo(width/2,i);
+		ctx.beginPath()
+		ctx.arc(width/2,i,2,0,2*Math.PI);
+		ctx.fill();
+	}
+
+	// HOUSE
+
+	ctx.moveTo(0,0);
+
+	//Основание
+	ctx.fillStyle = "beige";
+	ctx.fillRect(50,50,50,75);
+
+	//Дверь
+	ctx.fillStyle = "brown";
+	ctx.fillRect(80,100,20,25);
+
+
+	//Крыша
+	ctx.fillStyle = "red";
+	ctx.strokeStyle = "red";
+	ctx.beginPath();
+    ctx.moveTo(50,50);
+    ctx.lineTo(100,50);
+    ctx.lineTo(75,15);
+    ctx.fill();
+    ctx.closePath();
+    ctx.stroke();
+    //Дымоход
+
+	ctx.fillStyle = "black";
+	ctx.fillRect(90,30,10,20);
+
+
+
+
+
+/*
+		          ^
+				 / \
+				/___\
+			   /| o |\
+			  / |   | \
+			 /__| o |__\
+			 	|   |
+			   /  *  \
+			   -------
+*/
+
+
+	ctx.moveTo(600,100);
+	ctx.strokeStyle = "black";
+	ctx.lineTo(570,150);
+	ctx.lineTo(600,150);
+	ctx.lineTo(600,180);
+	ctx.lineTo(580,200);
+	ctx.lineTo(650,200);
+	ctx.lineTo(630,180);
+	ctx.lineTo(630,150);
+	ctx.lineTo(660,150);
+	ctx.lineTo(630,100);
+	ctx.lineTo(630,200);
+	ctx.lineTo(600,200);
+	ctx.lineTo(600,100);
+	ctx.lineTo(615,70);
+	ctx.lineTo(630,100);
+
+	var firstWin = new Path2D();
+    firstWin.arc(615, 115, 5, 0, 2 * Math.PI);
+    ctx.stroke(firstWin);
+    var secondWin = new Path2D();
+    secondWin.arc(615, 145, 5, 0, 2 * Math.PI);
+    ctx.stroke(secondWin);
+    var thirdWin = new Path2D();
+    thirdWin.arc(615, 175, 5, 0, 2 * Math.PI);
+    ctx.stroke(thirdWin);
+
+	ctx.stroke();
+
+
+	ctx.beginPath();
+	
+	var counter = 0, x=0,y=height/2+100;
+	
+	var gradient=ctx.createLinearGradient(0,0,620,700);
+	gradient.addColorStop(0,"black");
+	gradient.addColorStop("0.3","magenta");
+	gradient.addColorStop("0.5","blue");
+	gradient.addColorStop("0.6","green");
+	gradient.addColorStop("0.8","yellow");
+	gradient.addColorStop(1,"red");
+
+	var increase = 90/180*Math.PI / 9;
+	for(i=0; i<=620; i+=10){
+		ctx.strokeStyle = "green";
+	    ctx.moveTo(x,y);
+	    x = i;
+	    y =  height/2 +100  - Math.sin(counter) * 120;
+		counter += increase;
+	    
+	    ctx.lineTo(x,y);
+	    ctx.strokeStyle = gradient;
+	    ctx.stroke();
+	}
+
+	ctx.closePath();
+	ctx.stroke();
+
+//голова
+	ctx.beginPath();
+	ctx.moveTo(400,110);
+	ctx.strokeStyle = 'green';
+	ctx.fillStyle = 'green';
+	ctx.lineTo(430,90);
+	ctx.lineTo(470,90);
+	ctx.lineTo(500, 110);
+	ctx.fill();
+	ctx.stroke();
+
+	ctx.beginPath();
+	ctx.moveTo(400,110);
+	ctx.strokeStyle = 'black';
+	ctx.lineTo(500,110);
+	ctx.stroke();
+
+//глаза
+	ctx.beginPath();
+	ctx.fillStyle = 'black';
+	ctx.arc(435,100,5,0,Math.PI*2);
+	ctx.fill();
+
+	ctx.beginPath();
+	ctx.fillStyle = 'black';
+	ctx.arc(465,100,5,0,Math.PI*2);
+	ctx.fill();
+
+//туловище
+	ctx.beginPath();
+	ctx.fillStyle = 'green';
+	ctx.fillRect(400,110, 100, 100);
+	ctx.fill();
+
+	ctx.moveTo(410,120);
+	ctx.lineTo(490,120);
+	ctx.stroke();
+	ctx.lineTo(490,200);
+	ctx.stroke();
+	ctx.lineTo(410,200);
+	ctx.stroke();
+	ctx.lineTo(410,120);
+	ctx.stroke();
+
+
+	// ноги
+
+	ctx.beginPath();
+	ctx.fillStyle = 'black';
+	ctx.arc(430,210, 10, 0, Math.PI);
+	ctx.fill();
+	ctx.stroke();
+
+	ctx.beginPath();
+	ctx.fillStyle = 'black';
+	ctx.arc(470,210, 10, 0, Math.PI);
+	ctx.fill();
+	ctx.stroke();
+
+// Левая рука
+
+
+	ctx.beginPath();
+	ctx.fillStyle = 'green';
+	ctx.arc(400,150,10,Math.PI/2,Math.PI*1.5);
+	ctx.stroke();
+
+	
+
+// правая рука
+	
+	ctx.beginPath();
+	ctx.fillStyle = 'green';
+	ctx.arc(500,150,10,Math.PI*1.5,Math.PI/2);
+	ctx.stroke();
+
+	
+	// штырь
+
+	ctx.beginPath();
+	ctx.strokeStyle = 'red';
+	ctx.moveTo(470, 90);
+	ctx.lineTo(480, 60);
+	ctx.stroke();
+
+	// shar
+
+	ctx.beginPath();
+	ctx.fillStyle = 'red';
+	ctx.arc(480,60,5,0,Math.PI*2);
+	ctx.fill();
+
+	ctx.beginPath();
+	ctx.strokeStyle = 'red';
+	ctx.moveTo(430, 90);
+	ctx.lineTo(420, 60);
+	ctx.stroke();
+
+	// shar
+
+	ctx.beginPath();
+	ctx.fillStyle = 'red';
+	ctx.arc(420,60,5,0,Math.PI*2);
+	ctx.fill();
+
+
+
+	
+	ctx.moveTo(170,189);
+	ctx.fillStyle = 'black';
+	ctx.quadraticCurveTo(160,170,180,180);
+	ctx.quadraticCurveTo(170,160,190,170);
+	ctx.quadraticCurveTo(180,150,200,162);
+	ctx.quadraticCurveTo(190,140,210,158);
+	ctx.quadraticCurveTo(200,130,220,154);
+	ctx.quadraticCurveTo(220,130,230,153);
+	ctx.quadraticCurveTo(240,130,245,150);
+	ctx.quadraticCurveTo(260,120,260,151);
+	ctx.quadraticCurveTo(285,130,280,155);
+	ctx.quadraticCurveTo(320,135,310,170);
+	ctx.quadraticCurveTo(350,155,330,187);
+	ctx.quadraticCurveTo(380,185,345,215);
+	ctx.quadraticCurveTo(380,225,350,230);
+	ctx.quadraticCurveTo(390,225,365,235);
+	ctx.quadraticCurveTo(390,245,372,250);
+	ctx.quadraticCurveTo(390,270,365,265);
+	ctx.quadraticCurveTo(370,280,348,275);
+	ctx.quadraticCurveTo(390,290,336,300);
+	ctx.quadraticCurveTo(375,325,320,320);
+	ctx.quadraticCurveTo(320,360,300,340);
+	ctx.bezierCurveTo(200,470,300,440,200,338);
+	ctx.quadraticCurveTo(175,350,185,328);
+	ctx.quadraticCurveTo(150,350,170,310);
+	ctx.quadraticCurveTo(135,320,155,285);
+	ctx.quadraticCurveTo(125,300,140,268);
+	ctx.quadraticCurveTo(110,270,130,248);
+	ctx.quadraticCurveTo(125,230,140,232);
+	ctx.quadraticCurveTo(135,220,152,225);
+	ctx.quadraticCurveTo(140,210,158,210);
+	ctx.quadraticCurveTo(150,190,170,190);
+	ctx.fill();
+
+	
+
+
+	ctx.beginPath();
+	ctx.strokeStyle = 'red';
+	ctx.moveTo(150,250);
+	ctx.arc(250,250, 100, Math.PI, 0, true);
+	ctx.arc(250,250, 100, 0, Math.PI, true);
+	ctx.moveTo(370,250);
+	ctx.arc(350,250, 20, 0, Math.PI/2+Math.PI/20, false);
+	ctx.moveTo(370,250);
+	ctx.arc(350,250, 20, 0, 3*Math.PI/2-Math.PI/20, true);
+
+	ctx.moveTo(130,250);
+	ctx.arc(150,250, 20, Math.PI, 3*Math.PI/2+Math.PI/20, false);
+	ctx.moveTo(130,250);
+	ctx.arc(150,250, 20, Math.PI, Math.PI/2-Math.PI/20, true);
+
+	ctx.moveTo(275,346);
+	ctx.arc(275,366, 20, 3*Math.PI/2, 0, false);
+	ctx.moveTo(275,346);
+	ctx.arc(275,366, 20, 3*Math.PI/2, Math.PI, true);
+	ctx.lineTo(295, 366);
+
+	ctx.moveTo(225,346);
+	ctx.arc(225,366, 20, 3*Math.PI/2, 0, false);
+	ctx.moveTo(225,346);
+	ctx.arc(225,366, 20, 3*Math.PI/2, Math.PI, true);
+	ctx.lineTo(245, 366);
+
+	ctx.moveTo(280,200);
+	ctx.arc(280, 215, 15, 3*Math.PI/2, Math.PI/2, true);
+	ctx.moveTo(280,200);
+	ctx.arc(280, 215, 15, 3*Math.PI/2, Math.PI/2, false);
+
+	ctx.moveTo(230, 215);
+	ctx.lineTo(205, 215);
+
+	ctx.moveTo(270, 152);
+	ctx.bezierCurveTo(290, 5, 480, 7, 300, 165);
+
+	ctx.moveTo(220, 154);
+	ctx.bezierCurveTo(200, 5, 10, 7, 190, 171);
+	ctx.stroke();
+
+
+
+
+var imageData = ctx.getImageData(0,0,600,600);
+for(var x = 500; x< 600; x++) {
+	for(var y = 400;y<450;y++) {
+		var index = (y*imageData.width + x) * 4;
+		imageData.data[index]=255;
+		imageData.data[index+3] =255;
+	}
+}
+ctx.putImageData(imageData,0,0);
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+

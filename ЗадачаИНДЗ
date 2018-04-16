@@ -1,0 +1,173 @@
+
+
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<style type="text/css">
+	*,*:after,*:before {
+		box-sizing: border-box;
+	}
+	body {
+		position: relative;
+		width: 100%;
+		height: 100%;
+	}
+	.box {
+		position: fixed;
+		top: 20px;
+		right: 140px;
+		background-color: rgba(0,0,0,0.3);
+		padding: 10px;
+	}
+	canvas {
+		border: 1px solid black;
+	}
+	
+	</style>
+</head>
+<body>
+	<canvas id="canvas"></canvas>
+	<div class="box">
+		<label for="a">Сторона А: </label>
+		<input type="number" min="1" max="1000" value="100" step="1" name="a" id="a">
+		<p id="scale"></p>
+		<p id="perimeter"></p>
+		<p id="square"></p>
+		<button id="count" onclick="count()">Рассчитать</button>
+	</div>
+</body>
+</html>
+
+<script type="text/javascript">
+	
+	var canvas = document.getElementById('canvas');
+	var ctx = canvas.getContext('2d');
+
+	var height; 
+	var width; 
+	C = 10;
+	drawGrid();
+	drawAxis();
+	
+
+	function count() {
+		var input = document.getElementById('a');
+		var perimeterField = document.getElementById('perimeter');
+		var squareField = document.getElementById('square');
+		var scale = document.getElementById('scale');
+		var a = input.value;
+		if(a<0 || a>1000) {
+			alert('Диапазон 0-1000');
+			return;
+		}
+		var perimeter = 4 * a;
+		var square = a * a;
+
+		C = a/2;
+
+		perimeterField.innerHTML = "P = " + perimeter;
+		squareField.innerHTML = "S = " + square;
+		scale.innerHTML = "Масштаб: 1: " + C;
+
+		if(a>20 && a<30)
+		{
+			canvas.width = a * 10;
+			canvas.height = a * 10;
+		} else if (a >= 10 && a <= 20) {
+			canvas.width = a * 30;
+			canvas.height = a * 30;
+		}  else if (a >= 0 && a < 10) {
+			canvas.width = a * 50;
+			canvas.height = a * 50;
+		} 
+		else {
+			canvas.width = a * 2.5;
+			canvas.height = a * 2.5;
+		}
+
+		
+
+		height = canvas.height;
+		width = canvas.width;
+
+		drawSquare(a);
+	}
+
+	function drawSquare(a){
+		ctx.clearRect(0, 0, canvas.width, canvas.height);
+		drawGrid();
+		drawAxis();
+
+		var side = a;
+		console.log(a);
+
+		ctx.beginPath();
+		ctx.strokeRect(setXCooridinate(0) - a/2 ,setYCoordinate(0) - a/2,a,a);
+
+		ctx.beginPath();
+		ctx.fillText(-a, setXCooridinate(0)-a/2,setYCoordinate(0));
+		ctx.arc(setXCooridinate(0) - a/2, setYCoordinate(0), 2, 0, Math.PI*2);
+		ctx.fill();
+
+		ctx.beginPath();
+		ctx.fillText(a, setXCooridinate(0) + a/2,setYCoordinate(0));
+		ctx.arc(setXCooridinate(0) + a/2, setYCoordinate(0), 2, 0, Math.PI*2);
+		ctx.fill();
+
+		ctx.beginPath();
+		ctx.fillText(a, setXCooridinate(0),setYCoordinate(0) - a/2);
+		ctx.arc(setXCooridinate(0), setYCoordinate(0) - a/2, 2, 0, Math.PI*2);
+		ctx.fill();
+
+		ctx.beginPath();
+		ctx.fillText(-a, setXCooridinate(0),setYCoordinate(0) + a/2);
+		ctx.arc(setXCooridinate(0), setYCoordinate(0) + a/2, 2, 0, Math.PI*2);
+		ctx.fill();
+		
+	}
+
+	function setXCooridinate(x) {
+		var newCoord = x * C + width / 2;
+		return newCoord;
+
+	}
+
+	function setYCoordinate(y) {
+		var newCoord = -y * C + height / 2;
+		return newCoord;
+	}
+
+	
+	function drawGrid() {
+		for (var x = 0.5; x < width; x += C) {
+			ctx.moveTo(x, 0);
+			ctx.lineTo(x, height);
+		}
+
+		for (var y = 0.5; y < height; y += C) {
+			ctx.moveTo(0, y);
+			ctx.lineTo(width, y);
+		}
+
+		ctx.strokeStyle = "#eee";
+		ctx.stroke();
+	}
+
+	function drawAxis() {
+	// y axis
+	ctx.beginPath();
+	ctx.strokeStyle = "#000";
+	ctx.moveTo(width/2, 0);
+	ctx.lineTo(width/2, height);
+	ctx.stroke();
+	// x axis
+
+	ctx.beginPath();
+	ctx.strokeStyle = "#000";
+	ctx.moveTo(0, height/2);
+	ctx.lineTo(width, height/2);
+	ctx.stroke();
+	}
+ 
+</script>

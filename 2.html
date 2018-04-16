@@ -1,0 +1,97 @@
+
+
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<style type="text/css">
+	*,*:after,*:before {
+		box-sizing: border-box;
+	}
+	body {
+		position: relative;
+		width: 100%;
+		height: 100%;
+	}
+
+	canvas {
+		border: 1px solid black;
+	}
+	
+	</style>
+</head>
+<body>
+	<canvas id="canvas" height="500px" width="700px"></canvas>
+
+</body>
+</html>
+
+<script type="text/javascript">
+	
+	var canvas = document.getElementById('canvas');
+	var ctx = canvas.getContext('2d');
+
+	var height = canvas.height; 
+	var width = canvas.width; 
+	C = 10;
+	drawGrid();
+	drawAxis();
+
+
+	var imageData = ctx.getImageData(0,0,15,15);
+	
+	
+	
+	var index = (y*imageData.width + x) * 4;
+	imageData.data[index]=0;
+	imageData.data[index+1]=0;
+	imageData.data[index+2]=0;
+	imageData.data[index+3] =255;
+
+
+	ctx.putImageData(imageData,0,0);
+	
+	
+	function drawGrid() {
+		for (var x = 0.5; x < width; x += C) {
+			ctx.moveTo(x, 0);
+			ctx.lineTo(x, height);
+		}
+
+		for (var y = 0.5; y < height; y += C) {
+			ctx.moveTo(0, y);
+			ctx.lineTo(width, y);
+		}
+
+		ctx.strokeStyle = "#eee";
+		ctx.stroke();
+	}
+
+	function setXCooridinate(x) {
+		var newCoord = x * C + width / 2;
+		return newCoord;
+
+	}
+
+	function setYCoordinate(y) {
+		var newCoord = -y * C + height / 2;
+		return newCoord;
+	}
+
+	function drawAxis() {
+	// y axis
+	ctx.beginPath();
+	ctx.strokeStyle = "#000";
+	ctx.moveTo(width/2, 0);
+	ctx.lineTo(width/2, height);
+	ctx.stroke();
+	// x axis
+
+	ctx.beginPath();
+	ctx.strokeStyle = "#000";
+	ctx.moveTo(0, height/2);
+	ctx.lineTo(width, height/2);
+	ctx.stroke();
+	}
+ 
+</script>

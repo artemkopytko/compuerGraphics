@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+    <body>
+    	<canvas id="canvas" width="700px" height="500px"></canvas>
+        <script>
+        	
+	    // Create Canvas
+	    var canvas = document.getElementById('canvas');
+		var ctx = canvas.getContext('2d');
+
+		var MinRe = -2.0;
+		var MaxRe = 1.0;
+		var MinIm = -1.2;
+		var MaxIm = MinIm+(MaxRe-MinRe)*canvas.height/canvas.width;
+		var Re_factor = (MaxRe-MinRe)/(canvas.width-1);
+		var Im_factor = (MaxIm-MinIm)/(canvas.height-1);
+		var MaxIterations = 30;
+
+		for(var y=0; y<canvas.height; ++y)
+		{
+		   	var c_im = MaxIm - y*Im_factor;
+		    for(var x=0; x<canvas.width; ++x)
+		    {
+		       	var c_re = MinRe + x*Re_factor;
+
+		        // Calculate whether c belongs to the Mandelbrot set or
+		        // not and draw a pixel at coordinates (x,y) accordingly
+		        var Z_re = c_re, Z_im = c_im; // Set Z = c
+		        var isInside = true;
+		        for(var n=0; n<MaxIterations; ++n)
+		        {
+		            if(Z_re*Z_re + Z_im*Z_im > 4)
+		            {
+		                isInside = false;
+		                break;
+		            }
+		            /* Z = Z2 + c */
+		            // var Z_im2 = Z_im*Z_im;
+		            // Z_im = 2*Z_re*Z_im + c_im;
+		            // Z_re = Z_re*Z_re - Z_im2 + c_re;
+		            
+
+					var Z_im2 = Z_im*Z_im;
+		            Z_im = Z_im + Math.sin(2*n*Z_re*Z_im)+ c_im;
+		            Z_re = Z_re + Math.sin((n * Z_re * Z_re) - (n*Z_im2)) + c_re;
+
+		            //z2 + sin(i * z^2) + c
+
+		            if(Z_re * Z_im > 4)
+		            {
+		            	var val = n/MaxIterations * 100;
+		            }
+		            
+		        }
+		        if(isInside) {
+		        	ctx.fillStyle = 'black';
+		         	ctx.fillRect(x, y, 1, 1); 
+		     	} else {
+		     		ctx.fillStyle = 'hsl(0, 100%, '+ val+'%';
+		     		ctx.fillRect(x, y, 1, 1);
+		     	}
+		    }
+		}
+
+
+//
+
+
+
+    	</script>
+    </body>
+</html>
