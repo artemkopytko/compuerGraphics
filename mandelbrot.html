@@ -1,6 +1,63 @@
 <!DOCTYPE html>
 <html>
+	<style type="text/css">
+		*,*:after,*:before {
+			box-sizing: border-box;
+		}
+		body {
+			position: relative;
+			width: 100%;
+			height: 100%;
+		}
+
+		.box {
+			position: fixed;
+			top: 20px;
+			right: 140px;
+
+			background-color: rgba(0,0,0,0.3);
+			padding: 10px;
+		}
+		.row {
+			display: block;
+			padding: 10px 0;
+		}
+		canvas {
+			border: 1px solid black;
+		}
+	
+	</style>
     <body>
+    	<div class="box">
+    		<div class="row">
+				<label for="xmin">Xmin: </label>
+				<input type="number" min="-2" max="0.99" value="-0.03" step="0.01" name="xmin" id="xmin">
+			</div>
+		<div class="row">
+			<label for="xmax">Xmax: </label>
+			<input type="number" min="-1.99" max="1" value="0.03" step="0.01" name="xmax" id="xmax">
+		</div>
+				
+		<div class="row">
+			<label for="ymin">Ymin: </label>
+			<input type="number" min="-1" max="0.99" value="-0.04" step="0.01" name="ymin" id="ymin">
+		</div>
+				
+		<div class="row">
+			<label for="ymax">Ymax: </label>
+			<input type="number" min="-0.99" max="1" value="0.01" step="0.01" name="ymax" id="ymax">
+		</div>
+				
+		<div class="row">
+			<label for="iters">Iterations: </label>
+			<input type="number" min="1" max="10000" value="50" step="1" name="iters" id="iters">
+		</div>
+		
+
+
+
+		<button id="drawSet" onclick="buildSet()">Рассчитать</button>
+	</div>
     	<canvas id="canvas" width="700px" height="500px"></canvas>
         <script>
         	
@@ -8,65 +65,97 @@
 	    var canvas = document.getElementById('canvas');
 		var ctx = canvas.getContext('2d');
 
-		var MinRe = -2.0;
-		var MaxRe = 1.0;
-		var MinIm = -1.2;
-		var MaxIm = MinIm+(MaxRe-MinRe)*canvas.height/canvas.width;
-		var Re_factor = (MaxRe-MinRe)/(canvas.width-1);
-		var Im_factor = (MaxIm-MinIm)/(canvas.height-1);
-		var MaxIterations = 30;
+		// 
 
-		for(var y=0; y<canvas.height; ++y)
-		{
-		   	var c_im = MaxIm - y*Im_factor;
-		    for(var x=0; x<canvas.width; ++x)
-		    {
-		       	var c_re = MinRe + x*Re_factor;
+		function buildSet() {
+			ctx.clearRect(0, 0, canvas.width, canvas.height);
+		
+			var minX = parseFloat(document.getElementById('xmin').value);
+			var maxX = parseFloat(document.getElementById('xmax').value);
+			var minY = parseFloat(document.getElementById('ymin').value);
+			var maxY = parseFloat(document.getElementById('ymax').value);
+			var iters = parseFloat(document.getElementById('iters').value);
 
-		        // Calculate whether c belongs to the Mandelbrot set or
-		        // not and draw a pixel at coordinates (x,y) accordingly
-		        var Z_re = c_re, Z_im = c_im; // Set Z = c
-		        var isInside = true;
-		        for(var n=0; n<MaxIterations; ++n)
-		        {
-		            if(Z_re*Z_re + Z_im*Z_im > 4)
-		            {
-		                isInside = false;
-		                break;
-		            }
-		            /* Z = Z2 + c */
-		            // var Z_im2 = Z_im*Z_im;
-		            // Z_im = 2*Z_re*Z_im + c_im;
-		            // Z_re = Z_re*Z_re - Z_im2 + c_re;
-		            
-
-					var Z_im2 = Z_im*Z_im;
-		            Z_im = Z_im + Math.sin(2*n*Z_re*Z_im)+ c_im;
-		            Z_re = Z_re + Math.sin((n * Z_re * Z_re) - (n*Z_im2)) + c_re;
-
-		            //z2 + sin(i * z^2) + c
-
-		            if(Z_re * Z_im > 4)
-		            {
-		            	var val = n/MaxIterations * 100;
-		            }
-		            
-		        }
-		        if(isInside) {
-		        	ctx.fillStyle = 'black';
-		         	ctx.fillRect(x, y, 1, 1); 
-		     	} else {
-		     		ctx.fillStyle = 'hsl(0, 100%, '+ val+'%';
-		     		ctx.fillRect(x, y, 1, 1);
-		     	}
-		    }
+console.log(minX,maxX,minY,maxY,iters);
+			mandelbrot(canvas, minX, maxX, minY, maxY, iters);
 		}
 
 
-//
+	function mandelbrot(canvas, xmin, xmax, ymin, ymax, iterations) {
+		
+
+	    var width = canvas.width;
+	    var height = canvas.height;
+	 
+
+	    var img = ctx.getImageData(0, 0, width, height);
+	    var pix = img.data;
 
 
+ 
+    for (var ix = 0; ix < width; ++ix) {
+      	for (var iy = 0; iy < height; ++iy) {
+
+	        var x = xmin + (xmax - xmin) * ix / (width - 1);
+	        var y = ymin + (ymax - ymin) * iy / (height - 1);
+	        var i = mandelIter(x, y, iterations);
+	        var ppos = 4 * (width * iy + ix);
+	 
+	        if (i > iterations) {
+	          pix[ppos] = 0;
+	          pix[ppos + 1] = 0;
+	          pix[ppos + 2] = 0;
+	        } else {
+	          var c = 3 * Math.log(i) / Math.log(iterations - 1.0);
+	 
+	        if (c < 1) {
+	            pix[ppos] = 255 * c;
+	            pix[ppos + 1] = 0;
+	            pix[ppos + 2] = 0;
+	         }
+	          else if ( c < 2 ) {
+	            pix[ppos] = 255;
+	            pix[ppos + 1] = 255 * (c - 1);
+	            pix[ppos + 2] = 0;
+	          } else {
+	            pix[ppos] = 255;
+	            pix[ppos + 1] = 255;
+	            pix[ppos + 2] = 255 * (c - 2);
+	            }
+	        }
+        pix[ppos + 3] = 255;
+	    }
+	    
+	  }
+	 
+	  ctx.putImageData(img, 0, 0);
+	}
+
+		function mandelIter(cx, cy, maxIter) {
+		  var x = 0.0;
+		  var y = 0.0;
+		  var xx = 0;
+		  var yy = 0;
+		  var xy = 0;
+		 
+		  var i = maxIter;
+		  while (i-- && xx + yy <= 4) {
+		    xy = x * y;
+		    xx = x * x;
+		    yy = y * y;
+		    // x = xx - yy + cx;
+		    // y = xy + xy + cy;
+
+		    x = x + Math.sin(2*i*xy) + cx;
+		    y = y + Math.sin((i* yy) - (i*xx)) + cy;
+
+		  }
+		  return maxIter - i;
+		}
 
     	</script>
     </body>
 </html>
+
+
+ 
