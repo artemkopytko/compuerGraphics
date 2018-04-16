@@ -21,7 +21,7 @@
 	</style>
 </head>
 <body>
-	<canvas id="canvas" height="3000px" width="3000px"></canvas>
+	<canvas id="canvas" height="2000px" width="2000px"></canvas>
 
 </body>
 </html>
@@ -43,15 +43,15 @@
 	drawAxis();
 	
 
-for(var x = -canvas.width; x<canvas.width; x++) {
-	for(var y = -canvas.height;y<canvas.height;y++) {
-		f=1/100 * (x*x + y*y + 100*100);
+for(var x = -canvas.width/2; x<canvas.width; x++) {
+	for(var y = -canvas.height/2;y<canvas.height;y++) {
+		f=1/100 * (x*x + y*y - 100*100);
 
 		f = f%255;
 
-		if(f>0) {
-			ctx.fillStyle = 'rgba(25,25,112,'+f.toString()+')';
-		}	
+
+		ctx.fillStyle = 'rgba(25,25,112,'+f.toString()+')';
+
 
 		ctx.fillRect(setXCooridinate(x),setYCoordinate(y),1,1);
 		
