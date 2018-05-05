@@ -1,0 +1,137 @@
+<style type="text/css">
+		*,*:after,*:before {
+			box-sizing: border-box;
+		}
+		body {
+			position: relative;
+			width: 100%;
+			height: 100%;
+		}
+
+		.box {
+			position: fixed;
+			top: 20px;
+			right: 140px;
+
+			background-color: rgba(0,0,0,0.3);
+			padding: 10px;
+		}
+		.row {
+			display: block;
+			padding: 10px 0;
+		}
+		canvas {
+			border: 1px solid black;
+		}
+	
+	</style>
+<body>
+	<div class="box">
+    		<div class="row">
+				<label for="xmin">Xmin: </label>
+				<input type="number" min="-2" max="0.99" value="-0.03" step="0.01" name="xmin" id="xmin">
+			</div>
+		<div class="row">
+			<label for="xmax">Xmax: </label>
+			<input type="number" min="-1.99" max="1" value="0.03" step="0.01" name="xmax" id="xmax">
+		</div>
+				
+		<div class="row">
+			<label for="ymin">Ymin: </label>
+			<input type="number" min="-1" max="0.99" value="-0.04" step="0.01" name="ymin" id="ymin">
+		</div>
+				
+		<div class="row">
+			<label for="ymax">Ymax: </label>
+			<input type="number" min="-0.99" max="1" value="0.01" step="0.01" name="ymax" id="ymax">
+		</div>
+				
+		<div class="row">
+			<label for="iters">Iterations: </label>
+			<input type="number" min="1" max="10000" value="50" step="1" name="iters" id="iters">
+		</div>
+		
+
+
+
+		<button id="drawSet" onclick="buildSet()">Рассчитать</button>
+	</div>
+
+    <canvas id="canvas" width="700px" height="500px"></canvas>
+</body>
+
+<script type="text/javascript">
+
+	var canvas = document.getElementById('canvas');
+        var ctx = canvas.getContext('2d');
+        
+
+	var maxIterations = 450, minX = -.5, maxX = .5, 
+    minY = -.5, maxY = .5, wid = canvas.width, hei = canvas.height,
+    jsX = 0.285, jsY = 0.01;
+
+
+
+	function buildSet() {
+			ctx.clearRect(0, 0, canvas.width, canvas.height);
+		
+			minX = parseFloat(document.getElementById('xmin').value);
+			maxX = parseFloat(document.getElementById('xmax').value);
+			minY = parseFloat(document.getElementById('ymin').value);
+			maxY = parseFloat(document.getElementById('ymax').value);
+			maxIterations = parseFloat(document.getElementById('iters').value);
+
+console.log(minX,maxX,minY,maxY,iters);
+			drawFractal();
+		}
+
+
+ 
+function remap( x, t1, t2, s1, s2 ) {
+    var f = ( x - t1 ) / ( t2 - t1 ),
+        g = f * ( s2 - s1 ) + s1;
+    return g;
+}
+function getColor( c ) {
+    var r, g, b, p = c / 32,
+        l = ~~( p * 6 ), o = p * 6 - l, 
+        q = 1 - o;
+ 
+    switch( l % 6 ) {
+        case 0: r = 1; g = o; b = 0; break;
+        case 1: r = q; g = 1; b = 0; break;
+        case 2: r = 0; g = 1; b = o; break;
+        case 3: r = 0; g = q; b = 1; break;
+        case 4: r = o; g = 0; b = 1; break;
+        case 5: r = 1; g = 0; b = q; break;
+    }
+    var c = "#" + ( "00" + ( ~~( r * 255 ) ).toString( 16 ) ).slice( -2 ) + 
+                  ( "00" + ( ~~( g * 255 ) ).toString( 16 ) ).slice( -2 ) + 
+                  ( "00" + ( ~~( b * 255 ) ).toString( 16 ) ).slice( -2 );
+    return (c);
+}
+function drawFractal() {
+    var a, as, za, b, bs, zb, cnt, clr
+    for( var j = 0; j < hei; j++ ) {
+        for( var i = 0; i < wid; i++ ) {
+            a = remap( i, 0, wid, minX, maxX )
+            b = remap( j, 0, hei, minY, maxY )
+            cnt = 0;
+            while( ++cnt < maxIterations ) {
+                za = a * a; zb = b * b;
+                if( za + zb > 4 ) break;
+                as = za - zb; bs = 2 * a * b;
+                a = as + jsX; b = bs + jsY;
+            }
+            if( cnt < maxIterations ) {
+                ctx.fillStyle = getColor( cnt );
+            }
+            ctx.fillRect( i, j, 1, 1 );
+        }
+    }
+}
+
+
+
+
+</script>

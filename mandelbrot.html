@@ -31,26 +31,26 @@
     	<div class="box">
     		<div class="row">
 				<label for="xmin">Xmin: </label>
-				<input type="number" min="-2" max="0.99" value="-0.03" step="0.01" name="xmin" id="xmin">
+				<input type="number" min="-2" max="0.99" value="-0.03" step="0.01" name="xmin" id="xmin" onchange="buildSet()">
 			</div>
 		<div class="row">
 			<label for="xmax">Xmax: </label>
-			<input type="number" min="-1.99" max="1" value="0.03" step="0.01" name="xmax" id="xmax">
+			<input type="number" min="-1.99" max="1" value="0.03" step="0.01" name="xmax" id="xmax" onchange="buildSet()">
 		</div>
 				
 		<div class="row">
 			<label for="ymin">Ymin: </label>
-			<input type="number" min="-1" max="0.99" value="-0.04" step="0.01" name="ymin" id="ymin">
+			<input type="number" min="-1" max="0.99" value="-0.04" step="0.01" name="ymin" id="ymin" onchange="buildSet()">
 		</div>
 				
 		<div class="row">
 			<label for="ymax">Ymax: </label>
-			<input type="number" min="-0.99" max="1" value="0.01" step="0.01" name="ymax" id="ymax">
+			<input type="number" min="-0.99" max="1" value="0.01" step="0.01" name="ymax" id="ymax" onchange="buildSet()">
 		</div>
 				
 		<div class="row">
 			<label for="iters">Iterations: </label>
-			<input type="number" min="1" max="10000" value="50" step="1" name="iters" id="iters">
+			<input type="number" min="1" max="10000" value="50" step="1" name="iters" id="iters" onchange="buildSet()">
 		</div>
 		
 
