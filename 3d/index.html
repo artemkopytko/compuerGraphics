@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        html, body { margin: 0; padding: 0; overflow: hidden; }
+    </style>
+    <script src="three.js-master/build/three.min.js"></script>
+    <script src="OrbitControls.js"></script>
+</head>
+<body>
+<script>
+    var scene = new THREE.Scene();
+    var aspect = window.innerWidth / window.innerHeight;
+    var camera = new THREE.PerspectiveCamera( 75, aspect, 0.1, 1000 );
+    var renderer = new THREE.WebGLRenderer();
+    renderer.setSize( window.innerWidth, window.innerHeight );
+    document.body.appendChild( renderer.domElement );
+
+    controls = new THREE.OrbitControls(camera,renderer.domElement);
+
+    var geometry = new THREE.BoxGeometry( 2, 4, 1 );
+    var material = new THREE.MeshNormalMaterial({ transparent: true, opacity: 1});
+    var cube = new THREE.Mesh( geometry, material );
+    scene.add( cube );
+    cube.translateY(-1);
+
+    geometry = new THREE.ConeGeometry( 0.5, 2, 32 );
+    material = new THREE.MeshBasicMaterial({ color: 0xb20000});
+    var cone = new THREE.Mesh( geometry, material );
+    scene.add( cone );
+
+
+    cone.translateY(2);
+//    cone.scale.x(1.5,1,1);
+    cone.scale.x = 1.6;
+    cone.translateX(-0.3);
+
+    geometry = new THREE.BoxGeometry( 0.5, 1.5, 1 );
+    material = new THREE.MeshBasicMaterial({color:0x614126, transparent:true, opacity:1});
+    var pipe = new THREE.Mesh( geometry, material );
+    scene.add( pipe );
+    pipe.translateY(1.75);
+    pipe.translateX(0.75);
+
+
+    geometry = new THREE.BoxGeometry( 0.5, 1, 0.1 );
+    material = new THREE.MeshBasicMaterial({color:0x614126, transparent:true, opacity:1});
+    var door = new THREE.Mesh( geometry, material );
+    scene.add( door );
+    door.translateX(0.75);
+    door.translateY(-2.5);
+    door.translateZ(0.5);
+//    pipe.translateY(1.75);
+//    pipe.translateX(0.75);
+
+    //    cone.rotateY(76);
+//    cone.scale()
+    camera.position.z = 5;
+
+    var render = function () {
+        requestAnimationFrame( render );
+//        cube.rotation.x += 0.01;
+//        cube.rotation.y += 0.01;
+        renderer.render( scene, camera );
+    };
+
+    render();
+</script>
+</body>
+</html>
